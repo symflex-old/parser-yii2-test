@@ -18,7 +18,7 @@ class AdNetworksSearch extends AdNetworks
     {
         return [
             [['id'], 'integer'],
-            [['name', 'url'], 'safe'],
+            [['name', 'url', 'parser'], 'safe'],
         ];
     }
 
@@ -62,7 +62,8 @@ class AdNetworksSearch extends AdNetworks
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'url', $this->url]);
+            ->andFilterWhere(['like', 'url', $this->url])
+            ->andFilterWhere(['like', 'parser', $this->parser]);
 
         return $dataProvider;
     }

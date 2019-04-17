@@ -17,7 +17,8 @@ class m190417_095853_ad_network_table extends Migration
         $this->createTable(self::TABLE, [
             'id'   => $this->primaryKey(),
             'name' => $this->string()->notNull(),
-            'url'  => $this->string()->notNull()
+            'url'  => $this->string()->notNull(),
+            'parser' => $this->string()->notNull()
         ]);
     }
 

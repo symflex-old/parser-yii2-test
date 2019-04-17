@@ -10,6 +10,9 @@ use Yii;
  * @property int $id
  * @property string $name
  * @property string $url
+ * @property string $parser
+ *
+ * @property Offers[] $offers
  */
 class AdNetworks extends \yii\db\ActiveRecord
 {
@@ -27,8 +30,8 @@ class AdNetworks extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'url'], 'required'],
-            [['name', 'url'], 'string', 'max' => 255],
+            [['name', 'url', 'parser'], 'required'],
+            [['name', 'url', 'parser'], 'string', 'max' => 255],
         ];
     }
 
@@ -41,7 +44,16 @@ class AdNetworks extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => 'Name',
             'url' => 'Url',
+            'parser' => 'Parser',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOffers()
+    {
+        return $this->hasMany(Offers::className(), ['network_id' => 'id']);
     }
 
     /**
@@ -51,10 +63,5 @@ class AdNetworks extends \yii\db\ActiveRecord
     public static function find()
     {
         return new AdNetworksQuery(get_called_class());
-    }
-
-    public static function getList()
-    {
-        return self::find()->select(['id', 'name'])->asArray()->all();
     }
 }

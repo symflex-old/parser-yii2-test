@@ -1,14 +1,18 @@
 <?php
 
-namespace app\commands;
+namespace app\commands\Parser;
 
-use yii\console\Controller;
-
-abstract class Parser extends Controller
+abstract class BaseParser
 {
-    protected function getSourceData(string $url = '')
-    {
+    protected $url;
 
+    public function __construct(string $url)
+    {
+        $this->url = $url;
+    }
+
+    final protected function fetchSourceData(string $url = '')
+    {
         $fp = fopen (dirname(__FILE__) . '/', 'w+');
         $ch = curl_init(str_replace(" ","%20",$url));
         curl_setopt($ch, CURLOPT_TIMEOUT, 50);
@@ -18,4 +22,7 @@ abstract class Parser extends Controller
         curl_close($ch);
         fclose($fp);
     }
+
+    abstract public function process();
+
 }

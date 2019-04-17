@@ -72,6 +72,7 @@ class AdNetworksController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'parsers' => Yii::$app->params['parsers']
         ]);
     }
 
@@ -92,6 +93,7 @@ class AdNetworksController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'parsers' => Yii::$app->params['parsers']
         ]);
     }
 
