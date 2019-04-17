@@ -11,6 +11,8 @@ class m190417_095913_offers_table extends Migration
 
     public const TABLE_COUNTRY = 'country';
 
+    public const TABLE_AD_NETWORK = 'ad_networks';
+
     public const TABLE_COUNTRY_CROSS = 'county_to_offers';
 
     /**
@@ -35,6 +37,13 @@ class m190417_095913_offers_table extends Migration
 
         $this->createIndex('network', self::TABLE, 'network_id');
 
+        $this->addForeignKey(
+            'fk-offer-network-id',
+            self::TABLE,
+            'network_id',
+            self::TABLE_AD_NETWORK,
+            'id'
+        );
 
         $this->addForeignKey(
             'fk-offer-country-id',

@@ -19,6 +19,8 @@ use Yii;
  */
 class Offers extends \yii\db\ActiveRecord
 {
+    public $_countriesArray;
+
     /**
      * {@inheritdoc}
      */
@@ -36,9 +38,23 @@ class Offers extends \yii\db\ActiveRecord
             [['network_id', 'internal_id', 'name', 'payout'], 'required'],
             [['network_id', 'internal_id'], 'integer'],
             [['description'], 'string'],
+            [['countriesArray'], 'safe'],
             [['payout'], 'number'],
             [['name'], 'string', 'max' => 255],
         ];
+    }
+
+    public function getCountriesArray()
+    {
+        if ($this->_countriesArray === null) {
+            $this->_countriesArray = $this->getCountries()->select('id')->column();
+        }
+        return $this->_countriesArray;
+    }
+
+    public function setCountriesArray($values)
+    {
+        $this->_countriesArray = (array)$values;
     }
 
     /**
@@ -74,10 +90,32 @@ class Offers extends \yii\db\ActiveRecord
 
     /**
      * {@inheritdoc}
-     * @return OffersQuery the active query used by this AR class.
+     * @return CountyToOffersQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new OffersQuery(get_called_class());
+        return new CountyToOffersQuery(get_called_class());
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        $this->updateCountries();
+        parent::afterSave($insert, $changedAttributes);
+    }
+
+    public function updateCountries()
+    {
+        $currentCountriesIds = $this->getCountries()->select('id')->column();
+        $newCountriesIds = $this->getCountriesArray();
+        foreach (array_filter(array_diff($newCountriesIds, $currentCountriesIds)) as $countryId) {
+            if ($country = Country::findOne($countryId)) {
+                $this->link('countries', $country);
+            }
+        }
+        foreach (array_filter(array_diff($currentCountriesIds, $newCountriesIds)) as $countryId) {
+            if ($country = Country::findOne($countryId)) {
+                $this->unlink('countries', $country, true);
+            }
+        }
     }
 }

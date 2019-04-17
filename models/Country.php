@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use phpDocumentor\Reflection\Types\Self_;
 use Yii;
 
 /**
@@ -16,6 +17,7 @@ use Yii;
  */
 class Country extends \yii\db\ActiveRecord
 {
+
     /**
      * {@inheritdoc}
      */
@@ -71,5 +73,10 @@ class Country extends \yii\db\ActiveRecord
     public static function find()
     {
         return new CountryQuery(get_called_class());
+    }
+
+    public static function getList()
+    {
+        return self::find()->select(['id', 'code'])->asArray()->all();
     }
 }

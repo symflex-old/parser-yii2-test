@@ -52,4 +52,9 @@ class AdNetworks extends \yii\db\ActiveRecord
     {
         return new AdNetworksQuery(get_called_class());
     }
+
+    public static function getList()
+    {
+        return self::find()->select(['id', 'name'])->asArray()->all();
+    }
 }
