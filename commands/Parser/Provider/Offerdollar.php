@@ -4,10 +4,17 @@ namespace app\commands\Parser\Provider;
 
 use app\commands\Parser\BaseParser;
 
+/**
+ * Class Offerdollar
+ * @package app\commands\Parser\Provider
+ */
 final class Offerdollar extends BaseParser
 {
     public const DATA_FILE = 'offerdollar.xml';
 
+    /**
+     * @return array
+     */
     public function process()
     {
         $this->fetchSourceData();

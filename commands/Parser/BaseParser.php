@@ -2,10 +2,20 @@
 
 namespace app\commands\Parser;
 
+/**
+ * Class BaseParser
+ * @package app\commands\Parser
+ */
 abstract class BaseParser
 {
+    /**
+     * @var string
+     */
     protected $url;
 
+    /**
+     * @var string
+     */
     protected $fileDataPath;
 
     /**
@@ -51,5 +61,4 @@ abstract class BaseParser
     }
 
     abstract public function process();
-
 }

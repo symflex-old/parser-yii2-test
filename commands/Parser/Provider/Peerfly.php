@@ -4,10 +4,18 @@ namespace app\commands\Parser\Provider;
 
 use app\commands\Parser\BaseParser;
 
+/**
+ * Class Peerfly
+ * @package app\commands\Parser\Provider
+ */
 final class Peerfly extends BaseParser
 {
+
     public const DATA_FILE = 'peerfly.xml';
 
+    /**
+     * @return array
+     */
     public function process()
     {
         $this->fetchSourceData();
