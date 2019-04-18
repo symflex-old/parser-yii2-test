@@ -21,6 +21,11 @@ class m190417_095305_country_table extends Migration
         ]);
 
         $this->createIndex('country_code', self::TABLE, ['code']);
+
+        $this->insert(self::TABLE, [
+            'name' => 'USA',
+            'code' => 'us'
+        ]);
     }
 
     /**

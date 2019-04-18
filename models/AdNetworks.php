@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "ad_networks".
@@ -63,5 +64,10 @@ class AdNetworks extends \yii\db\ActiveRecord
     public static function find()
     {
         return new AdNetworksQuery(get_called_class());
+    }
+
+    public function getList()
+    {
+        return self::find()->select(['id', 'name'])->all();
     }
 }

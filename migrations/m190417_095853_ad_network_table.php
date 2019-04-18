@@ -20,6 +20,19 @@ class m190417_095853_ad_network_table extends Migration
             'url'  => $this->string()->notNull(),
             'parser' => $this->string()->notNull()
         ]);
+
+        $this->batchInsert(self::TABLE, ['name', 'url', 'parser'],[
+            [
+                'PeerFly',
+                'http://api.peerfly.com/rss/offers.php?count=all',
+                \app\commands\Parser\Provider\Peerfly::class
+            ],
+            [
+                'OfferDollar',
+                'https://offerdollar.com/offer_feed.php?pubid=2',
+                \app\commands\Parser\Provider\Offerdollar::class
+            ]
+        ]);
     }
 
     /**

@@ -50,8 +50,6 @@ class ParserController extends Controller
 
         $allOffers = Offers::findAll(['network_id' => $networkId]);
 
-
-
         foreach ($allOffers as $offer) {
 
             if (
@@ -71,7 +69,8 @@ class ParserController extends Controller
             }
 
             if (!empty($dbCountries)) {
-                $dbCountries = ArrayHelper::map($dbCountries, 'id');
+                $dbCountries = ArrayHelper::map($dbCountries, 'id', 'id');
+
                 $offer->setCountriesArray($dbCountries);
                 $offer->save();
             }
