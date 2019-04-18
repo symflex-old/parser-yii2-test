@@ -40,7 +40,7 @@ class ParserController extends Controller
         $countries = [];
 
         foreach ($offers as $offer) {
-            $countries = $offer['countries'];
+            $countries[$offer['internal_id']] = $offer['countries'];
             unset($offer['countries']);
             $offer['network_id'] = $networkId;
             \Yii::$app->db->createCommand()
@@ -50,9 +50,12 @@ class ParserController extends Controller
 
         $allOffers = Offers::findAll(['network_id' => $networkId]);
 
+
+
         foreach ($allOffers as $offer) {
+
             if (
-                is_string($countries)
+                is_string($countries[$offer->internal_id])
                 && $countries === 'all'
             ) {
                 $dbCountries = Country::find()
@@ -62,21 +65,16 @@ class ParserController extends Controller
             } else {
                 $dbCountries = Country::find()
                                 ->select(['id'])
-                                ->where(['in', 'code', $countries] )
+                                ->where(['in', 'code', $countries[$offer->internal_id]])
                                 ->asArray()
                                 ->all();
             }
 
-            var_dump($dbCountries); exit;
-
-
-
-            $dbCountries = ArrayHelper::map($dbCountries, 'id');
-
-
-
-            $offer->setCountriesArray($dbCountries);
-            $offer->save();
+            if (!empty($dbCountries)) {
+                $dbCountries = ArrayHelper::map($dbCountries, 'id');
+                $offer->setCountriesArray($dbCountries);
+                $offer->save();
+            }
         }
     }
 }
