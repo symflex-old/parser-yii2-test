@@ -4,27 +4,27 @@ namespace app\commands\Parser\Provider;
 
 use app\commands\Parser\BaseParser;
 
-final class Peerfly extends BaseParser
+final class Offerdollar extends BaseParser
 {
-    public const DATA_FILE = 'peerfly.xml';
+    public const DATA_FILE = 'offerdollar.xml';
 
     public function process()
     {
         $this->fetchSourceData();
         $file = $this->fileDataPath . '/' . self::DATA_FILE;
         $xml = simplexml_load_file($file);
-        $items = $xml->xpath('//channel/item');
+        $items = $xml->xpath('//campaigns/campaign');
         $result = [];
 
         foreach ($items as $item) {
 
-            $internalId = (int)$item->offerID;
+            $internalId = (int)$item->campaign_id;
 
             $result[$internalId] = [
-                'name' => (string)$item->title,
-                'payout' => (string)$item->payout,
+                'name' => (string)$item->campaign_name,
+                'payout' => trim((string)$item->payout, '$'),
                 'countries' => $this->prepareCountries((string)$item->countries),
-                'description' => (string)$item->description,
+                'description' => (string)$item->campaign_desc,
                 'internal_id' => $internalId
             ];
         }

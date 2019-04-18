@@ -6,21 +6,48 @@ abstract class BaseParser
 {
     protected $url;
 
-    public function __construct(string $url)
+    protected $fileDataPath;
+
+    /**
+     * BaseParser constructor.
+     * @param string $url
+     * @param string $fileDataPath
+     */
+    public function __construct(string $url, string $fileDataPath)
     {
         $this->url = $url;
+        $this->fileDataPath = $fileDataPath;
     }
 
-    final protected function fetchSourceData(string $url = '')
+    /**
+     *
+     */
+    final protected function fetchSourceData()
     {
-        $fp = fopen (dirname(__FILE__) . '/', 'w+');
-        $ch = curl_init(str_replace(" ","%20",$url));
-        curl_setopt($ch, CURLOPT_TIMEOUT, 50);
+        $fp = fopen ($this->fileDataPath . '/' . static::DATA_FILE, 'w+');
+        $ch = curl_init($this->url);
         curl_setopt($ch, CURLOPT_FILE, $fp);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_exec($ch);
         curl_close($ch);
         fclose($fp);
+    }
+
+    /**
+     * @param string $countries
+     * @return array|string
+     */
+    protected function prepareCountries(string $countries)
+    {
+        if ($countries === 'all') {
+            return $countries;
+        }
+        $counties = explode(',', $countries);
+        $counties = array_map(function ($country) {
+            return strtolower(trim($country));
+        }, $counties);
+
+        return $counties;
     }
 
     abstract public function process();

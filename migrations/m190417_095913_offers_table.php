@@ -35,7 +35,9 @@ class m190417_095913_offers_table extends Migration
             'PRIMARY KEY(offer_id, country_id)'
         ]);
 
-        $this->createIndex('network', self::TABLE, 'network_id');
+        $this->createIndex('idx-network_id', self::TABLE, 'network_id');
+        $this->createIndex('idx-internal_id', self::TABLE, 'network_id');
+        $this->createIndex('idx-network-internal', self::TABLE, ['network_id', 'internal_id'], true);
 
         $this->addForeignKey(
             'fk-offer-network-id',
