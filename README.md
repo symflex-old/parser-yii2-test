@@ -1,5 +1,7 @@
 ### Установка и запуск
 ```
+git clone https://github.com/symflex/parser-yii2-test.git .
+
 php yii migrate/up
 php yii parser/index
 php yii parser/index 1
